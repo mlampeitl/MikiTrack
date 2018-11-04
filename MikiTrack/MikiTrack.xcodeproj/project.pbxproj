@@ -12,6 +12,10 @@
 		25AD8E10218F481200DE898E /* MikiTrack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 25AD8E0E218F481200DE898E /* MikiTrack.xcdatamodeld */; };
 		25AD8E12218F481300DE898E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25AD8E11218F481300DE898E /* Assets.xcassets */; };
 		25AD8E15218F481300DE898E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25AD8E13218F481300DE898E /* Main.storyboard */; };
+		25C0FDA6218F4DB20099EF2D /* GpxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C0FDA2218F4DB20099EF2D /* GpxParser.swift */; };
+		25C0FDA7218F4DB20099EF2D /* GpxParserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C0FDA3218F4DB20099EF2D /* GpxParserError.swift */; };
+		25C0FDA8218F4DB20099EF2D /* GpxXmlParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C0FDA4218F4DB20099EF2D /* GpxXmlParser.swift */; };
+		25C0FDA9218F4DB20099EF2D /* GpxTrackPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C0FDA5218F4DB20099EF2D /* GpxTrackPoint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +27,10 @@
 		25AD8E14218F481300DE898E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		25AD8E16218F481300DE898E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		25AD8E17218F481300DE898E /* MikiTrack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MikiTrack.entitlements; sourceTree = "<group>"; };
+		25C0FDA2218F4DB20099EF2D /* GpxParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GpxParser.swift; sourceTree = "<group>"; };
+		25C0FDA3218F4DB20099EF2D /* GpxParserError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GpxParserError.swift; sourceTree = "<group>"; };
+		25C0FDA4218F4DB20099EF2D /* GpxXmlParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GpxXmlParser.swift; sourceTree = "<group>"; };
+		25C0FDA5218F4DB20099EF2D /* GpxTrackPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GpxTrackPoint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +63,7 @@
 		25AD8E09218F481200DE898E /* MikiTrack */ = {
 			isa = PBXGroup;
 			children = (
+				25C0FDA1218F4D620099EF2D /* GpxParser */,
 				25AD8E0A218F481200DE898E /* AppDelegate.swift */,
 				25AD8E0C218F481200DE898E /* ViewController.swift */,
 				25AD8E11218F481300DE898E /* Assets.xcassets */,
@@ -64,6 +73,17 @@
 				25AD8E0E218F481200DE898E /* MikiTrack.xcdatamodeld */,
 			);
 			path = MikiTrack;
+			sourceTree = "<group>";
+		};
+		25C0FDA1218F4D620099EF2D /* GpxParser */ = {
+			isa = PBXGroup;
+			children = (
+				25C0FDA2218F4DB20099EF2D /* GpxParser.swift */,
+				25C0FDA3218F4DB20099EF2D /* GpxParserError.swift */,
+				25C0FDA5218F4DB20099EF2D /* GpxTrackPoint.swift */,
+				25C0FDA4218F4DB20099EF2D /* GpxXmlParser.swift */,
+			);
+			path = GpxParser;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,6 +158,10 @@
 			files = (
 				25AD8E0D218F481200DE898E /* ViewController.swift in Sources */,
 				25AD8E0B218F481200DE898E /* AppDelegate.swift in Sources */,
+				25C0FDA6218F4DB20099EF2D /* GpxParser.swift in Sources */,
+				25C0FDA7218F4DB20099EF2D /* GpxParserError.swift in Sources */,
+				25C0FDA8218F4DB20099EF2D /* GpxXmlParser.swift in Sources */,
+				25C0FDA9218F4DB20099EF2D /* GpxTrackPoint.swift in Sources */,
 				25AD8E10218F481200DE898E /* MikiTrack.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
