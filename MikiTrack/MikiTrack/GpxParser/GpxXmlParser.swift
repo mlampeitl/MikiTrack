@@ -128,6 +128,13 @@ class GpxXmlParser :  NSObject, XMLParserDelegate
         // End of Trackpoint
         if inTrackPoint && (elementName == cTrackPointElementKey)
         {
+            // Add TrackPoint to Array
+            if (theTrackpoints != nil) && (theCurrentTrackpoint != nil)
+            {
+                theTrackpoints!.append(theCurrentTrackpoint!);
+            }
+            
+            // Reset variables
             theCurrentTrackpoint = nil;
             theCurrentString = nil;
             inTrackPoint = false;
