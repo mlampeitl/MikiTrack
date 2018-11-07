@@ -22,11 +22,11 @@ class GpxXmlParser :  NSObject, XMLParserDelegate
     private var _inTrackPoint: Bool = false;
     private var _inTrack: Bool = false;
 
-    private let cTrackElementKey: String = "trk";
-    private let cTrackNameElementKey: String = "name";
-    private let cTrackPointElementKey: String = "trkpt";
-    private let cElevationElementKey: String = "ele";
-    private let cTimeStampElementKey: String = "time";
+    private let _trackElementKey: String = "trk";
+    private let _trackNameElementKey: String = "name";
+    private let _trackPointElementKey: String = "trkpt";
+    private let _elevationElementKey: String = "ele";
+    private let _timeStampElementKey: String = "time";
     
     
     
@@ -60,7 +60,7 @@ class GpxXmlParser :  NSObject, XMLParserDelegate
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
 
         // Track
-        if elementName == cTrackElementKey
+        if elementName == _trackElementKey
         {
             _inTrack = true
             _currentTrack = GpxTrack();
@@ -68,14 +68,14 @@ class GpxXmlParser :  NSObject, XMLParserDelegate
         // Track embedded
         if _inTrack
         {
-            if (elementName == cTrackNameElementKey)
+            if (elementName == _trackNameElementKey)
             {
                 _currentString = "";
             }
         }
 
         // TrackPoint
-        if elementName == cTrackPointElementKey
+        if elementName == _trackPointElementKey
         {
             _inTrackPoint = true
             
@@ -104,8 +104,8 @@ class GpxXmlParser :  NSObject, XMLParserDelegate
         // TrackPoint embedded
         if _inTrackPoint
         {
-            if (elementName == cElevationElementKey)
-                || (elementName == cTimeStampElementKey)
+            if (elementName == _elevationElementKey)
+                || (elementName == _timeStampElementKey)
             {
                 _currentString = "";
             }
@@ -123,7 +123,7 @@ class GpxXmlParser :  NSObject, XMLParserDelegate
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
 
         //Track / Name
-        if _inTrack && (elementName == cTrackNameElementKey)
+        if _inTrack && (elementName == _trackNameElementKey)
         {
             let myName:String? = _currentString;
             if _currentTrack != nil
@@ -133,7 +133,7 @@ class GpxXmlParser :  NSObject, XMLParserDelegate
             _currentString = nil;
         }
         // End of Track
-        if _inTrack && (elementName == cTrackElementKey)
+        if _inTrack && (elementName == _trackElementKey)
         {
             // Add Track to Array
             if (_tracks != nil) && (_currentTrack != nil)
@@ -149,7 +149,7 @@ class GpxXmlParser :  NSObject, XMLParserDelegate
 
 
         // TrackPoint / Elevation
-        if _inTrackPoint && (elementName == cElevationElementKey)
+        if _inTrackPoint && (elementName == _elevationElementKey)
         {
             let myEleString:String? = _currentString;
             if !(myEleString == nil && myEleString!.isEmpty)
@@ -161,7 +161,7 @@ class GpxXmlParser :  NSObject, XMLParserDelegate
         }
 
         // TrackPoint / Time
-        if _inTrackPoint && (elementName == cTimeStampElementKey)
+        if _inTrackPoint && (elementName == _timeStampElementKey)
         {
             let myTimestampString:String? = _currentString;
             if !(myTimestampString == nil && myTimestampString!.isEmpty)
@@ -175,7 +175,7 @@ class GpxXmlParser :  NSObject, XMLParserDelegate
 
         
         // End of Trackpoint
-        if _inTrackPoint && (elementName == cTrackPointElementKey)
+        if _inTrackPoint && (elementName == _trackPointElementKey)
         {
             // Add TrackPoint to Array
             if (_trackPoints != nil) && (_currentTrackPoint != nil)
