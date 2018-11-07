@@ -10,17 +10,17 @@ import Foundation
 
 class GpxXmlParser :  NSObject, XMLParserDelegate
 {
-    private var theGpxString: String = "";
-    private var theGpxData: Data;
-    private var theXmlParser: XMLParser;
-    private var theTrackpoints: [GpxTrackPoint]?;
-    private var theCurrentTrackpoint: GpxTrackPoint?;
-    private var theCurrentString: String?;
+    private var _gpx: String = "";
+    private var _gpxData: Data;
+    private var _xmlParser: XMLParser;
+    private var _trackPoints: [GpxTrackPoint]?;
+    private var _currentTrackPoint: GpxTrackPoint?;
+    private var _currentString: String?;
     private var _tracks: [GpxTrack]?;
     private var _currentTrack: GpxTrack? = nil;
 
-    private var inTrackPoint: Bool = false;
-    private var inTrack: Bool = false;
+    private var _inTrackPoint: Bool = false;
+    private var _inTrack: Bool = false;
 
     private let cTrackElementKey: String = "trk";
     private let cTrackNameElementKey: String = "name";
@@ -34,24 +34,24 @@ class GpxXmlParser :  NSObject, XMLParserDelegate
     {
         if gpxString.isEmpty { throw GpxParserError.gpxIsEmpty }
         
-        theGpxString = gpxString
+        _gpx = gpxString
         
         // Init Parser
         _currentTrack = nil;
-        theGpxData = Data(theGpxString.utf8);
-        theXmlParser = XMLParser(data: theGpxData);
+        _gpxData = Data(_gpx.utf8);
+        _xmlParser = XMLParser(data: _gpxData);
 
         super.init();
-        theXmlParser.delegate = self;
-        theXmlParser.parse();
+        _xmlParser.delegate = self;
+        _xmlParser.parse();
 
     }
     
     // Start Document >> Initalize the GPX Structure
     func parserDidStartDocument(_ parser: XMLParser) {
-        theTrackpoints = [];
-        theCurrentTrackpoint = nil;
-        theCurrentString = nil;
+        _trackPoints = [];
+        _currentTrackPoint = nil;
+        _currentString = nil;
         _currentTrack = nil;
         _tracks = [];
     }
@@ -62,78 +62,78 @@ class GpxXmlParser :  NSObject, XMLParserDelegate
         // Track
         if elementName == cTrackElementKey
         {
-            inTrack = true
+            _inTrack = true
             _currentTrack = GpxTrack();
         }
         // Track embedded
-        if inTrack
+        if _inTrack
         {
             if (elementName == cTrackNameElementKey)
             {
-                theCurrentString = "";
+                _currentString = "";
             }
         }
 
         // TrackPoint
         if elementName == cTrackPointElementKey
         {
-            inTrackPoint = true
+            _inTrackPoint = true
             
             // Get lat/lon
             let myLatString:String? = attributeDict["lat"];
             let myLonString:String? = attributeDict["lon"];
 
             // Create a new trackpoint
-            theCurrentTrackpoint = GpxTrackPoint();
+            _currentTrackPoint = GpxTrackPoint();
             //Lat
             if !(myLatString == nil && myLatString!.isEmpty)
             {
                 let myLat = (myLatString! as NSString).doubleValue
-                theCurrentTrackpoint?.lattitude = myLat;
+                _currentTrackPoint?.lattitude = myLat;
             }
             
             //Lon
             if !(myLonString == nil && myLonString!.isEmpty)
             {
                 let myLon = (myLonString! as NSString).doubleValue
-                theCurrentTrackpoint?.longitude = myLon;
+                _currentTrackPoint?.longitude = myLon;
             }
 
         }
         
         // TrackPoint embedded
-        if inTrackPoint
+        if _inTrackPoint
         {
             if (elementName == cElevationElementKey)
                 || (elementName == cTimeStampElementKey)
             {
-                theCurrentString = "";
+                _currentString = "";
             }
         }
     }
     
     func parser(_ parser: XMLParser, foundCharacters string: String)
     {
-        if theCurrentString != nil
+        if _currentString != nil
         {
-            theCurrentString = String(theCurrentString!) + string;
+            _currentString = String(_currentString!) + string;
         }
     }
     
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
 
         //Track / Name
-        if inTrack && (elementName == cTrackNameElementKey)
+        if _inTrack && (elementName == cTrackNameElementKey)
         {
-            let myName:String? = theCurrentString;
+            let myName:String? = _currentString;
             if _currentTrack != nil
             {
                 _currentTrack!.trackName = myName;
             }
-            theCurrentString = nil;
+            _currentString = nil;
         }
         // End of Track
-        if inTrack && (elementName == cTrackElementKey)
+        if _inTrack && (elementName == cTrackElementKey)
         {
             // Add Track to Array
             if (_tracks != nil) && (_currentTrack != nil)
@@ -143,54 +143,54 @@ class GpxXmlParser :  NSObject, XMLParserDelegate
             
             // Reset variables
             _currentTrack = nil;
-            theCurrentString = nil;
-            inTrack = false;
+            _currentString = nil;
+            _inTrack = false;
         }
 
 
         // TrackPoint / Elevation
-        if inTrackPoint && (elementName == cElevationElementKey)
+        if _inTrackPoint && (elementName == cElevationElementKey)
         {
-            let myEleString:String? = theCurrentString;
+            let myEleString:String? = _currentString;
             if !(myEleString == nil && myEleString!.isEmpty)
             {
                 let myEle = (myEleString! as NSString).doubleValue
-                theCurrentTrackpoint?.elevation = myEle;
+                _currentTrackPoint?.elevation = myEle;
             }
-            theCurrentString = nil;
+            _currentString = nil;
         }
 
         // TrackPoint / Time
-        if inTrackPoint && (elementName == cTimeStampElementKey)
+        if _inTrackPoint && (elementName == cTimeStampElementKey)
         {
-            let myTimestampString:String? = theCurrentString;
+            let myTimestampString:String? = _currentString;
             if !(myTimestampString == nil && myTimestampString!.isEmpty)
             {
                 let myDateFormatter = ISO8601DateFormatter();
                 let myTimestamp = myDateFormatter.date(from: myTimestampString!);
-                theCurrentTrackpoint?.timestamp = myTimestamp;
+                _currentTrackPoint?.timestamp = myTimestamp;
             }
-            theCurrentString = nil;
+            _currentString = nil;
         }
 
         
         // End of Trackpoint
-        if inTrackPoint && (elementName == cTrackPointElementKey)
+        if _inTrackPoint && (elementName == cTrackPointElementKey)
         {
             // Add TrackPoint to Array
-            if (theTrackpoints != nil) && (theCurrentTrackpoint != nil)
+            if (_trackPoints != nil) && (_currentTrackPoint != nil)
             {
-                theTrackpoints!.append(theCurrentTrackpoint!);
+                _trackPoints!.append(_currentTrackPoint!);
             }
-            if inTrack && (_currentTrack != nil)
+            if _inTrack && (_currentTrack != nil)
             {
-                _currentTrack!.trackPoints.append(theCurrentTrackpoint!);
+                _currentTrack!.trackPoints.append(_currentTrackPoint!);
             }
             
             // Reset variables
-            theCurrentTrackpoint = nil;
-            theCurrentString = nil;
-            inTrackPoint = false;
+            _currentTrackPoint = nil;
+            _currentString = nil;
+            _inTrackPoint = false;
         }
     }
 }
